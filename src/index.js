@@ -3,28 +3,35 @@ import ReactDOM from 'react-dom'
 
 const Header = ({title}) => (<h1>{title}</h1>)
 
-const PalauteNappi = ({handleClick, text}) =>
+const Button = ({handleClick, text}) =>
   <button onClick={handleClick}>{text}</button>
 
 const Palaute = ({handleGoodClick, handleNeutralClick, handleBadClick}) =>
   <div>
-    <PalauteNappi text="hyvä" handleClick={handleGoodClick}/>
-    <PalauteNappi text="neutraali" handleClick={handleNeutralClick} />
-    <PalauteNappi text="huono" handleClick={handleBadClick} />
+    <Button text="hyvä" handleClick={handleGoodClick}/>
+    <Button text="neutraali" handleClick={handleNeutralClick} />
+    <Button text="huono" handleClick={handleBadClick} />
   </div>
+
+const Statistic = ({text, statistic}) =>
+  <tr>
+    <td>{text}</td><td>{statistic}</td>
+  </tr>
 
 const Statistics = ({good, neutral, bad}) => {
   const total = good + neutral + bad
   if (total > 0) {
     return (
-      <div>
-        <div>hyvä {good}</div>
-        <div>neutraali {neutral}</div>
-        <div>huono {bad}</div>
-        <div>yhteensä {good + neutral + bad}</div>
-        <div>keskiarvo {(good - bad)/total}</div>
-        <div>positiivisia {good / total * 100} %</div>
-      </div>
+      <table>
+        <tbody>
+          <Statistic text="hyvä" statistic={good}/>
+          <Statistic text="neutraali" statistic={neutral}/>
+          <Statistic text="huono" statistic={bad}/>
+          <Statistic text="yhteensä" statistic={total}/>
+          <Statistic text="keskiarvo" statistic={(good - bad)/total}/>
+          <Statistic text="positiivisia" statistic={good / total * 100 + ' %'}/>
+        </tbody>
+      </table>
     )
   }
   
