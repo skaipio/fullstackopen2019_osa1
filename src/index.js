@@ -13,12 +13,19 @@ const Palaute = ({handleGoodClick, handleNeutralClick, handleBadClick}) =>
     <PalauteNappi text="huono" handleClick={handleBadClick} />
   </div>
 
-const Statistiikka = ({good, neutral, bad}) =>
-  <div>
-    <p>hyvä {good}</p>
-    <p>neutraali {neutral}</p>
-    <p>huono {bad}</p>
-  </div>
+const Statistiikka = ({good, neutral, bad}) => {
+  const total = good + neutral + bad
+  return (
+    <div>
+      <div>hyvä {good}</div>
+      <div>neutraali {neutral}</div>
+      <div>huono {bad}</div>
+      <div>yhteensä {good + neutral + bad}</div>
+      <div>keskiarvo {(good - bad)/total}</div>
+      <div>positiivisia {good / total * 100} %</div>
+    </div>
+  )
+}
 
 const App = () => {
   // tallenna napit omaan tilaansa
