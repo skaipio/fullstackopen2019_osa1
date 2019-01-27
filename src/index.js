@@ -14,6 +14,10 @@ function shuffle(a) {
   return a;
 }
 
+const Anecdote = ({anecdote}) => <div>{anecdote}</div>
+
+const VoteDisplay = ({votes}) => <div>has {votes} votes</div>
+
 const App = (props) => {
   const [selected, setSelected] = useState(0)
   const [points, setPoints] = useState(props.anecdotes.map(() => 0))
@@ -31,16 +35,24 @@ const App = (props) => {
     setPoints(copy)
   }
 
+  const getMostVotesIndex = () => {
+    const indices = points.map((v, i) => i)
+    const sorted = indices.sort((index1, index2) => points[index2] - points[index1])
+    return sorted[0]
+  }
+
+  const mostVotesIndex = getMostVotesIndex()
+
   return (
     <>
-      <div>
-        {props.anecdotes[selected]}
-      </div>
-      <div>
-        has {points[selected]} votes
-      </div>
+      <h1>Anecdote of the day</h1>
+      <Anecdote anecdote={props.anecdotes[selected]} />
+      <VoteDisplay votes={points[selected]} />
       <button onClick={vote}>vote</button>
       <button onClick={nextAnecdote}>next anecdote</button>
+      <h1>Anecdote with most votes</h1>
+      <Anecdote anecdote={props.anecdotes[mostVotesIndex]} />
+      <VoteDisplay votes={points[mostVotesIndex]} />
     </>
   )
 }
@@ -57,4 +69,4 @@ const anecdotes = [
 ReactDOM.render(
   <App anecdotes={anecdotes} />,
   document.getElementById('root')
-)
+) 
