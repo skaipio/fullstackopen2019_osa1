@@ -16,12 +16,19 @@ function shuffle(a) {
 
 const App = (props) => {
   const [selected, setSelected] = useState(0)
+  const [points, setPoints] = useState(props.anecdotes.map(() => 0))
 
   const nextAnecdote = () => {
-    const indices = anecdotes.map((v, index) => index)
+    const indices = props.anecdotes.map((v, index) => index)
     indices.splice(selected, 1)
     shuffle(indices)
     setSelected(indices[0])
+  }
+
+  const vote = () => {
+    const copy = [...points]
+    copy[selected] += 1
+    setPoints(copy)
   }
 
   return (
@@ -29,6 +36,10 @@ const App = (props) => {
       <div>
         {props.anecdotes[selected]}
       </div>
+      <div>
+        has {points[selected]} votes
+      </div>
+      <button onClick={vote}>vote</button>
       <button onClick={nextAnecdote}>next anecdote</button>
     </>
   )
