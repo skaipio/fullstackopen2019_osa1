@@ -1,59 +1,46 @@
-import React from 'react'
+import React, {useState} from 'react'
 import ReactDOM from 'react-dom'
 
-const Header = (props) => (<h1>{props.course}</h1>)
+const Header = ({title}) => (<h1>{title}</h1>)
 
-const Part = (props) => (
-  <p>
-    {props.name} {props.exercises}
-  </p>
-)
+const PalauteNappi = ({handleClick, text}) =>
+  <button onClick={handleClick}>{text}</button>
 
-const Content = (props) => {
-  console.log(props)
-  const [part1, part2, part3] = props.parts
-  return (
-    <>
-      <Part name={part1.name} exercises={part1.exercises} />
-      <Part name={part2.name} exercises={part2.exercises} />
-      <Part name={part3.name} exercises={part3.exercises} />
-    </>
-  )
-}
+const Palaute = ({handleGoodClick, handleNeutralClick, handleBadClick}) =>
+  <div>
+    <PalauteNappi text="hyvä" handleClick={handleGoodClick}/>
+    <PalauteNappi text="neutraali" handleClick={handleNeutralClick} />
+    <PalauteNappi text="huono" handleClick={handleBadClick} />
+  </div>
 
-const Total = (props) => {
-  const total = props.parts.reduce((acc, part) => (acc + part.exercises), 0)
-  return (
-    <p>yhteensä {total} tehtävää</p>
-  )
-}
+const Statistiikka = ({good, neutral, bad}) =>
+  <div>
+    <p>hyvä {good}</p>
+    <p>neutraali {neutral}</p>
+    <p>huono {bad}</p>
+  </div>
 
 const App = () => {
-  const course = {
-    name: 'Half Stack -sovelluskehitys',
-    parts: [
-      {
-        name: 'Reactin perusteet',
-        exercises: 10
-      },
-      {
-        name: 'Tiedonvälitys propseilla',
-        exercises: 7
-      },
-      {
-        name: 'Komponenttien tila',
-        exercises: 14
-      }
-    ]
-  }
+  // tallenna napit omaan tilaansa
+  const [good, setGood] = useState(0)
+  const [neutral, setNeutral] = useState(0)
+  const [bad, setBad] = useState(0)
 
   return (
     <div>
-      <Header course={course.name} />
-      <Content parts={course.parts} />
-      <Total parts={course.parts} />
+      <Header title="anna palautetta" />
+      <Palaute
+        handleGoodClick={() => setGood(good + 1)}
+        handleNeutralClick={() => setNeutral(neutral + 1)}
+        handleBadClick={() => setBad(bad + 1)}
+
+      />
+      <Header title="statistiikka" />
+      <Statistiikka good={good} neutral={neutral} bad={bad} />
     </div>
   )
 }
 
-ReactDOM.render(<App />, document.getElementById('root'))
+ReactDOM.render(<App />, 
+  document.getElementById('root')
+)
