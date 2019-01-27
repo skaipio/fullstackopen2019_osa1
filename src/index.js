@@ -13,7 +13,7 @@ const Palaute = ({handleGoodClick, handleNeutralClick, handleBadClick}) =>
     <PalauteNappi text="huono" handleClick={handleBadClick} />
   </div>
 
-const Statistiikka = ({good, neutral, bad}) => {
+const Statistics = ({good, neutral, bad}) => {
   const total = good + neutral + bad
   return (
     <div>
@@ -43,7 +43,7 @@ const App = () => {
 
       />
       <Header title="statistiikka" />
-      <Statistiikka good={good} neutral={neutral} bad={bad} />
+      <Statistics good={good} neutral={neutral} bad={bad} />
     </div>
   )
 }
