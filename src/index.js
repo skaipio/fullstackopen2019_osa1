@@ -1,66 +1,49 @@
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 import ReactDOM from 'react-dom'
 
-const Header = ({title}) => (<h1>{title}</h1>)
-
-const Button = ({handleClick, text}) =>
-  <button onClick={handleClick}>{text}</button>
-
-const Palaute = ({handleGoodClick, handleNeutralClick, handleBadClick}) =>
-  <div>
-    <Button text="hyvä" handleClick={handleGoodClick}/>
-    <Button text="neutraali" handleClick={handleNeutralClick} />
-    <Button text="huono" handleClick={handleBadClick} />
-  </div>
-
-const Statistic = ({text, statistic}) =>
-  <tr>
-    <td>{text}</td><td>{statistic}</td>
-  </tr>
-
-const Statistics = ({good, neutral, bad}) => {
-  const total = good + neutral + bad
-  if (total > 0) {
-    return (
-      <table>
-        <tbody>
-          <Statistic text="hyvä" statistic={good}/>
-          <Statistic text="neutraali" statistic={neutral}/>
-          <Statistic text="huono" statistic={bad}/>
-          <Statistic text="yhteensä" statistic={total}/>
-          <Statistic text="keskiarvo" statistic={(good - bad)/total}/>
-          <Statistic text="positiivisia" statistic={good / total * 100 + ' %'}/>
-        </tbody>
-      </table>
-    )
+/**
+ * Shuffles array in place. ES6 version
+ * https://stackoverflow.com/questions/6274339/how-can-i-shuffle-an-array
+ * @param {Array} a items An array containing the items.
+ */
+function shuffle(a) {
+  for (let i = a.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
   }
-  
+  return a;
+}
+
+const App = (props) => {
+  const [selected, setSelected] = useState(0)
+
+  const nextAnecdote = () => {
+    const indices = anecdotes.map((v, index) => index)
+    indices.splice(selected, 1)
+    shuffle(indices)
+    setSelected(indices[0])
+  }
+
   return (
-    <p>Ei yhtään palautetta annettu</p>
+    <>
+      <div>
+        {props.anecdotes[selected]}
+      </div>
+      <button onClick={nextAnecdote}>next anecdote</button>
+    </>
   )
 }
 
-const App = () => {
-  // tallenna napit omaan tilaansa
-  const [good, setGood] = useState(0)
-  const [neutral, setNeutral] = useState(0)
-  const [bad, setBad] = useState(0)
+const anecdotes = [
+  'If it hurts, do it more often',
+  'Adding manpower to a late software project makes it later!',
+  'The first 90 percent of the code accounts for the first 90 percent of the development time...The remaining 10 percent of the code accounts for the other 90 percent of the development time.',
+  'Any fool can write code that a computer can understand. Good programmers write code that humans can understand.',
+  'Premature optimization is the root of all evil.',
+  'Debugging is twice as hard as writing the code in the first place. Therefore, if you write the code as cleverly as possible, you are, by definition, not smart enough to debug it.'
+]
 
-  return (
-    <div>
-      <Header title="anna palautetta" />
-      <Palaute
-        handleGoodClick={() => setGood(good + 1)}
-        handleNeutralClick={() => setNeutral(neutral + 1)}
-        handleBadClick={() => setBad(bad + 1)}
-
-      />
-      <Header title="statistiikka" />
-      <Statistics good={good} neutral={neutral} bad={bad} />
-    </div>
-  )
-}
-
-ReactDOM.render(<App />, 
+ReactDOM.render(
+  <App anecdotes={anecdotes} />,
   document.getElementById('root')
 )
