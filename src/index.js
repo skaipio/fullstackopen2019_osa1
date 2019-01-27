@@ -15,15 +15,21 @@ const Palaute = ({handleGoodClick, handleNeutralClick, handleBadClick}) =>
 
 const Statistics = ({good, neutral, bad}) => {
   const total = good + neutral + bad
+  if (total > 0) {
+    return (
+      <div>
+        <div>hyvä {good}</div>
+        <div>neutraali {neutral}</div>
+        <div>huono {bad}</div>
+        <div>yhteensä {good + neutral + bad}</div>
+        <div>keskiarvo {(good - bad)/total}</div>
+        <div>positiivisia {good / total * 100} %</div>
+      </div>
+    )
+  }
+  
   return (
-    <div>
-      <div>hyvä {good}</div>
-      <div>neutraali {neutral}</div>
-      <div>huono {bad}</div>
-      <div>yhteensä {good + neutral + bad}</div>
-      <div>keskiarvo {(good - bad)/total}</div>
-      <div>positiivisia {good / total * 100} %</div>
-    </div>
+    <p>Ei yhtään palautetta annettu</p>
   )
 }
 
